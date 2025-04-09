@@ -3,7 +3,7 @@ version: 2.1
 executors:
   bazel-executor:
     docker:
-      - image: cimg/base:stable  # or ubuntu, debian, etc.
+      - image: cimg/base:stable
     working_directory: ~/repo
 
 jobs:
@@ -13,14 +13,11 @@ jobs:
       - checkout
 
       - run:
-          name: Install Bazel
+          name: Install Bazelisk (auto Bazel version manager)
           command: |
-            sudo apt update
-            sudo apt install -y curl gnupg
-            curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor >bazel.gpg
-            sudo mv bazel.gpg /etc/apt/trusted.gpg.d/
-            echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
-            sudo apt update && sudo apt install -y bazel
+            curl -Lo bazelisk https://github.com/bazelbuild/bazelisk/releases/download/v1.19.0/bazelisk-linux-amd64
+            chmod +x bazelisk
+            sudo mv bazelisk /usr/local/bin/bazel
 
       - run:
           name: Run Bazel Build
