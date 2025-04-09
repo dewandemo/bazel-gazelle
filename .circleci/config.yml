@@ -3,7 +3,7 @@ version: 2.1
 executors:
   bazel-executor:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/base:stable  # You can change this to any base you need
     working_directory: ~/repo
 
 jobs:
@@ -13,16 +13,15 @@ jobs:
       - checkout
 
       - run:
-          name: Install Bazelisk (auto Bazel version manager)
+          name: Install Bazelisk
           command: |
-            curl -Lo bazelisk https://github.com/bazelbuild/bazelisk/releases/download/v1.19.0/bazelisk-linux-amd64
-            chmod +x bazelisk
-            sudo mv bazelisk /usr/local/bin/bazel
+            curl -Lo bazel https://github.com/bazelbuild/bazelisk/releases/latest/download/bazelisk-linux-amd64
+            chmod +x bazel
+            sudo mv bazel /usr/local/bin/bazel
 
       - run:
-          name: Run Bazel Build
-          command: |
-            bazel build //...
+          name: Run Bazel build
+          command: bazel build //...
 
 workflows:
   build-workflow:
